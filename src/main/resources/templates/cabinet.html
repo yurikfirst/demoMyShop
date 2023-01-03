@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<div th:replace="/fragments/head.html"/>
+	<title>Магазин снежинок - Личный кабинет</title>
+	<link rel="stylesheet" href="/styles/header.css">
+	<link rel="stylesheet" href="/styles/cabinet.css">
+</head>
+
+<body>
+<header th:replace="/fragments/header.html"/>
+<div id="div-content">
+	<div id="div-pers-info">
+		<form action="/logout" method="get">
+			<input type="submit" value="Выйти">
+			<hr>
+		</form>
+		<form action="/cabinet/person_change" method="post" th:object="${user}">
+			<label for="input-full-name">Полное имя:</label><br>
+			<input id="input-full-name" name="fullName" type="text" th:value="*{fullName}"><br>
+			<label for="input-email">email:</label><br>
+			<input id="input-email" name="email" type="email" th:value="*{email}"><br>
+			<label for="input-phone">Телефон:</label><br>
+			<input id="input-phone" name="phone" type="tel" th:value="*{phone}"><br><br>
+			<label for="input-login">Логин:</label><br>
+			<input id="input-login" name="login" type="text" th:value="*{login}"><br>
+			<label for="input-pass">Пароль:</label><br>
+			<input id="input-pass" name="password" type="password" placeholder="Новый пароль"><br><br>
+			<input type="submit" value="Сохранить">
+		</form>
+	</div>
+	<hr>
+	<table class="table">
+		<thead>
+		<tr>
+			<th>Номер заказа</th>
+			<th th:if="${isAdmin}">Пользователь</th>
+			<th th:if="${isAdmin}">Телефон</th>
+			<th th:if="${isAdmin}">Почта</th>
+			<th>Стоимость заказа</th>
+			<th>Дата создания</th>
+			<th>Статус</th>
+		</tr>
+		</thead>
+		<tbody>
+		<th:block th:each="order:${orders}" th:object="${order}">
+			<tr>
+				<td><a th:href="'/cabinet/order/' + *{id}" th:text="*{id}"/></td>
+				<td th:text="*{user.fullName}" th:if="${isAdmin}"/>
+				<td th:text="*{user.phone}" th:if="${isAdmin}"/>
+				<td th:text="*{user.email}" th:if="${isAdmin}"/>
+				<td th:text="*{totalPrice}"/>
+				<td th:text="${#dates.format(order.createDate, 'dd.MM.yyyy HH:mm')}"/>
+				<td th:text="*{statusDescription}"/>
+			</tr>
+		</th:block>
+		</tbody>
+	</table>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<div th:replace="/fragments/head.html"/>
+	<title>Магазин снежинок - Авторизация</title>
+	<link rel="stylesheet" href="/styles/auth.css">
+	<script src="/scripts/auth.js"></script>
+</head>
+
+<body>
+<div id="content"
+	 th:with="patternLogin=${'^(?=.{4,}$)[a-zA-Z]+[0-9a-zA-Z_]+[0-9a-zA-Z]+$'}, patternPass=${'^(?=.{8,}$)[^\s]+$'}">
+	<img id="logo" src="/images/logo.png" alt="">
+	<p id="p-err"></p>
+	<input type="text" class="in-auth" id="in-login" placeholder="Логин" maxlength="20" th:pattern="${patternLogin}">
+	<input type="password" class="in-auth" id="in-pass" placeholder="Пароль" maxlength="20" th:pattern="${patternPass}">
+	<input type="password" class="in-auth" id="in-pass-accept" placeholder="Подтверждение пароля" maxlength="20"
+		   th:pattern="${patternPass}">
+	<script>
+		$('#in-pass-accept').hide();
+		$(".in-auth").keyup(authPressedEnter);
+	</script>
+	<button onclick="bEnterClick()" id="b-enter">Войти</button>
+	<p onclick="pRegisterClick()" id="p-register">
+		<span style="color: gray; font-size: 16px;">или</span><br>Зарегистрироваться
+	</p>
+</div>
+</body>
+
+</html>

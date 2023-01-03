@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<div th:replace="/fragments/head.html"/>
+	<title>Магазин снежинок - Личный кабинет</title>
+	<link rel="stylesheet" href="/styles/header.css">
+	<link rel="stylesheet" href="/styles/order.css">
+</head>
+
+<body>
+<header th:replace="/fragments/header.html"/>
+<div id="div-content">
+	<div class="div-ad">
+		<p id="p-adTitle" th:text="'Позиции заказа № ' + ${orderId}"/>
+	</div>
+	<table class="table">
+		<thead>
+		<tr>
+			<th>Изображение</th>
+			<th>Название</th>
+			<th>Количество</th>
+			<th>Цена за штуку</th>
+			<th>Цена</th>
+		</tr>
+		</thead>
+		<tfoot>
+		<tr>
+			<td/>
+			<td/>
+			<td/>
+			<td>Итого</td>
+			<td th:text="${totalPrice}"></td>
+		</tr>
+		</tfoot>
+		<tbody>
+		<th:block th:each="orderPosition:${orderPositions}" th:object="${orderPosition}">
+			<tr>
+				<td><img th:src="'/images/snowflakes/snowflake' + *{snowflakeId} + '.png'" alt="Snowflake"></td>
+				<td th:text="*{snowflakeTitle}"/>
+				<td th:text="*{count}"/>
+				<td th:text="*{priceOne}"/>
+				<td th:text="*{count * priceOne}"/>
+			</tr>
+		</th:block>
+		</tbody>
+	</table>
+</div>
+</body>
+
+</html>

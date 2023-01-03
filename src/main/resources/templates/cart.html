@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<div th:replace="/fragments/head.html"/>
+	<title>Магазин снежинок - Корзина</title>
+	<link rel="stylesheet" href="/styles/header.css">
+	<link rel="stylesheet" href="/styles/cart.css">
+	<script src="/scripts/cart.js"></script>
+</head>
+
+<body>
+<header th:replace="/fragments/header.html"/>
+<div id="div-content">
+	<main>
+		<div class="div-head">
+			<div id="div-clear-order" onclick="location.href='/cart/clear'">
+				<p>Очистить корзину</p>
+			</div>
+			<p id="p-adTitle" th:text="'Корзина. Общая сумма товаров: ' + ${totalPrice} + ' ₽'"/>
+			<div id="div-clear-order" onclick="location.href='/cart/createOrder'">
+				<p>Оформить заказ</p>
+			</div>
+		</div>
+		<div class="div-ad">
+			<th:block th:each="snowflake:${snowflakes}" th:object="${snowflake}">
+				<div class="div-goods">
+					<img class="img-goods" th:src="'/images/snowflakes/snowflake' + *{id} + '.png'" alt="Snowflake"
+						 th:onclick="'snowflakeCard(' + *{id} + ')'">
+					<p th:text="*{title}"/>
+					<input th:id="'input-cost' + *{id}" type="number" th:value="*{countInCart}" min="0" max="100"
+						   th:onchange="'changeCount(' + *{id} + ')'">
+					<p th:id="'p-cost' + *{id}" th:text="'Цена: ' + *{price*countInCart} + ' ₽'"/>
+				</div>
+			</th:block>
+		</div>
+		<script>updateStatusGoodsInCart();</script>
+	</main>
+</div>
+</body>
+
+</html>

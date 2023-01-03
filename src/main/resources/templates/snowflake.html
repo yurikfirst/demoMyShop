@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<div th:replace="/fragments/head.html"/>
+	<title>Магазин снежинок - Карточка товара</title>
+	<link rel="stylesheet" href="/styles/header.css">
+	<link rel="stylesheet" href="/styles/snowflake.css">
+	<script src="/scripts/snowflake.js"></script>
+</head>
+
+<body>
+<header th:replace="/fragments/header.html"/>
+<div id="content">
+	<th:block th:object="${snowflake}">
+		<div class="div-goods">
+			<img class="img-goods" th:src="'/images/snowflakes/snowflake' + *{id} + '.png'" alt="Snowflake"
+				 th:onclick="'snowflakeCard(' + *{id} + ')'">
+			<th:block th:if="${isAdmin}">
+				<form action="change" method="post">
+					<input type="hidden" name="id" th:value="${id}"/>
+					<label for="input-title">Название:</label>
+					<input id="input-title" type="text" name="title" th:value="*{title}"/>
+					<hr>
+					<label for="input-price">Цена:</label>
+					<input id="input-price" type="number" name="price" th:value="*{price}"/>
+					<hr>
+					<label for="input-descr">Описание:</label>
+					<input id="input-descr" type="text" name="description" th:value="*{description}"/>
+					<hr>
+					<p style="margin: 0">Категории:</p><br>
+					<input class="in-category" type="checkbox" th:each="category:${allCategories}"
+						   th:text="${category.title}" th:checked="${category.checked}" name="categoryId[]"
+						   th:value="${category.id}"/>
+					<hr>
+					<label for="input-count">В наличии:</label>
+					<input id="input-count" type="number" name="count" th:value="*{count}"/>
+					<hr>
+					<input type="submit" value="Сохранить"><br><br>
+				</form>
+			</th:block>
+			<th:block th:unless="${isAdmin}">
+				<p th:text="*{title}"/>
+				<p th:text="'Цена: ' + *{price} + ' ₽'"/>
+				<hr>
+				<p th:text="'Описание: ' + *{description}"/>
+				<hr>
+				<p>Категории:</p><br>
+				<p th:each="category:*{categories}" th:text="${category.title}"><br></p>
+				<hr>
+				<p th:text="'В наличии: ' + *{count} + ' шт.'"/>
+			</th:block>
+		</div>
+	</th:block>
+</div>
+</body>
+
+</html>

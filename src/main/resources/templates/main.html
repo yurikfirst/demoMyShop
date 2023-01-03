@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<div th:replace="/fragments/head.html"/>
+	<title>Магазин снежинок - Главная страница</title>
+	<link rel="stylesheet" href="/styles/header.css">
+	<link rel="stylesheet" href="/styles/main.css">
+	<script src="/scripts/main.js"></script>
+</head>
+
+<body>
+<header th:replace="/fragments/header.html"/>
+
+<div id="div-content">
+	<div id="div-menu">
+		<div class="menu-item" data-categoryId="-1" onclick="filterCategory(0)">
+			<p data-categoryId="-1">Все снежинки</p>
+		</div>
+		<th:block th:each="category:${categories}" th:object="${category}">
+			<div class="menu-item" th:attr="data-categoryId=*{id}" th:onclick="'filterCategory(' + *{id} + ')'">
+				<p th:attr="data-categoryId=*{id}" th:text="*{title}"/>
+			</div>
+		</th:block>
+	</div>
+	<main>
+		<div class="div-ad">
+			<p id="p-adTitle"
+			   th:text="${categoryName eq null} ? 'Мы подобрали для Вас товары' : 'Снежинки категории: ' + ${categoryName}">
+				TRUE or
+				FALSE</p>
+		</div>
+		<div class="div-ad">
+			<th:block th:each="snowflake:${snowflakes}" th:object="${snowflake}">
+				<div class="div-goods" th:attr="data-snowflakeId=*{id},data-inCart=*{isInCart}">
+					<img class="img-goods" th:src="'/images/snowflakes/snowflake' + *{id} + '.png'" alt="Snowflake"
+						 th:onclick="'snowflakeCard(' + *{id} + ')'">
+					<p th:text="*{title}"/>
+					<p th:text="'Цена: ' + *{price} + ' ₽'"/>
+					<div class="div-goods-cart" th:onclick="'actionToCart(' + *{id} + ')'">
+						<img src="/images/cart.png" alt=""/>
+					</div>
+				</div>
+			</th:block>
+		</div>
+		<script>updateStatusGoodsInCart();</script>
+	</main>
+</div>
+</body>
+
+</html>
